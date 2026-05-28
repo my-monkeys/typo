@@ -25,7 +25,7 @@ export function Results({ results, config, onRestart, onBack }) {
   const t = labels[lang]
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '2.5rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', gap: '2.5rem' }}>
       {/* WPM */}
       <div style={{ textAlign: 'center' }}>
         <div style={{ fontSize: '5rem', fontWeight: '800', color: 'var(--accent)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
@@ -52,7 +52,7 @@ export function Results({ results, config, onRestart, onBack }) {
 
       {/* Record badge */}
       {isRecord && (
-        <div style={{ color: 'var(--accent)', fontSize: '0.875rem', letterSpacing: '0.1em', border: '1px solid var(--accent)', borderRadius: '2rem', padding: '0.3rem 1rem', background: 'rgba(226,203,149,0.08)' }}>
+        <div style={{ color: 'var(--accent)', fontSize: '0.875rem', letterSpacing: '0.1em', border: '1px solid var(--accent)', borderRadius: '2rem', padding: '0.3rem 1rem', background: 'var(--accent-light)' }}>
           {t.record}
         </div>
       )}
@@ -82,7 +82,7 @@ export function Results({ results, config, onRestart, onBack }) {
             padding: '0.6rem 1.5rem',
             borderRadius: '0.5rem',
             border: '1px solid var(--accent)',
-            background: 'rgba(226,203,149,0.1)',
+            background: 'var(--accent-light)',
             color: 'var(--accent)',
             cursor: 'pointer',
             fontSize: '0.9rem',

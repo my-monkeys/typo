@@ -44,7 +44,7 @@ export function TypingTest({ config, onFinish }) {
     : `${Math.floor((charStates.filter(c => c.status !== 'pending').length / charStates.length) * 100)}%`
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '2rem', padding: '2rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', gap: '2rem', padding: '2rem' }}>
       {/* Timer / progress */}
       <div style={{ fontSize: '2rem', fontWeight: '700', color: 'var(--accent)', fontVariantNumeric: 'tabular-nums', minWidth: '4rem', textAlign: 'center' }}>
         {timerLabel}
