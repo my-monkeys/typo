@@ -1,0 +1,17 @@
+export const quotesEn = [
+  "The only way to do great work is to love what you do.",
+  "In the middle of every difficulty lies opportunity.",
+  "It does not matter how slowly you go as long as you do not stop.",
+  "The future belongs to those who believe in the beauty of their dreams.",
+  "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+  "Believe you can and you are halfway there.",
+  "The best time to plant a tree was twenty years ago. The second best time is now.",
+  "An unexamined life is not worth living.",
+  "Life is what happens when you are busy making other plans.",
+  "The only impossible journey is the one you never begin.",
+  "Simplicity is the ultimate sophistication.",
+  "In order to be irreplaceable one must always be different.",
+  "A person who never made a mistake never tried anything new.",
+  "The way to get started is to quit talking and begin doing.",
+  "If you look at what you have in life, you will always have more.",
+]

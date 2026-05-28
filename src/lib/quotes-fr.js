@@ -1,0 +1,17 @@
+export const quotesFr = [
+  "La vie est belle.",
+  "La simplicite est la sophistication supreme.",
+  "Sois le changement que tu veux voir dans le monde.",
+  "La meilleure facon de predire l'avenir est de le creer.",
+  "Le succes c'est d'aller d'echec en echec sans perdre son enthousiasme.",
+  "La connaissance s'acquiert par l'experience, tout le reste n'est que de l'information.",
+  "Votre temps est limite, ne le gachez pas a vivre la vie de quelqu'un d'autre.",
+  "Le bonheur n'est pas quelque chose de fait. Il vient de vos propres actions.",
+  "Chaque jour est une nouvelle chance de changer votre vie.",
+  "Il ne faut pas attendre d'etre parfait pour commencer quelque chose de bien.",
+  "La patience est amere, mais son fruit est doux.",
+  "On ne voit bien qu'avec le coeur. L'essentiel est invisible pour les yeux.",
+  "Celui qui veut deplacer une montagne commence par enlever de petites pierres.",
+  "La vie n'est pas de trouver un abri contre la tempete mais d'apprendre a danser sous la pluie.",
+  "Agis de maniere a traiter l'humanite toujours comme une fin et jamais comme un moyen.",
+]
