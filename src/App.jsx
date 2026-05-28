@@ -38,7 +38,7 @@ export default function App() {
         <LandingPage onStart={handleStart} />
       )}
       {phase === 'test' && config && (
-        <TypingTest key={testKey} config={config} onFinish={handleFinish} />
+        <TypingTest key={testKey} config={config} onFinish={handleFinish} onRestart={handleRestart} />
       )}
       {phase === 'results' && results && config && (
         <Results results={results} config={config} onRestart={handleRestart} onBack={handleBack} />

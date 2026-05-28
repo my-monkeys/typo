@@ -38,3 +38,7 @@ html, body {
   border-left: 2px solid var(--accent);
   animation: blink 1s step-end infinite;
 }
+
+.ghost-cursor {
+  border-right: 2px solid var(--pending);
+}
