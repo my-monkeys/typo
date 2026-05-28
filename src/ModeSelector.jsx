@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Timer, Quote, Globe } from 'lucide-react'
+import { Timer, Quote } from 'lucide-react'
 
 const DURATIONS = [15, 30, 60]
 
