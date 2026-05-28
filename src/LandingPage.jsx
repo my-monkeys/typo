@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Timer, Quote } from 'lucide-react'
 
 const DURATIONS = [15, 30, 60]
+const TARGET_WPMS = [40, 60, 80, 100]
 
 const content = {
   fr: {
@@ -12,6 +13,7 @@ const content = {
     stats: ['Vitesse moyenne : 40 WPM', 'Rapide : 70 WPM', 'Record mondial : 216 WPM'],
     modes: { duration: 'Durée', quote: 'Citation' },
     start: 'Commencer le test',
+    targetWpm: 'Vitesse cible (WPM)',
     seo: {
       whatTitle: "Qu'est-ce que le WPM ?",
       whatText: "Le WPM (Words Per Minute) est l'unité de mesure standard de la vitesse de frappe. Il correspond au nombre de mots de 5 caractères tapés correctement en une minute. Un score élevé en WPM reflète à la fois la rapidité et la précision.",
@@ -39,6 +41,7 @@ const content = {
     stats: ['Average speed: 40 WPM', 'Fast: 70 WPM', 'World record: 216 WPM'],
     modes: { duration: 'Timed', quote: 'Quote' },
     start: 'Start the test',
+    targetWpm: 'Target WPM',
     seo: {
       whatTitle: 'What is WPM?',
       whatText: 'WPM (Words Per Minute) is the standard unit for measuring typing speed. It counts the number of 5-character words typed correctly per minute. A high WPM score reflects both speed and accuracy.',
@@ -64,6 +67,7 @@ export function LandingPage({ onStart }) {
   const [lang, setLang] = useState(() => localStorage.getItem('typo_lang') || 'fr')
   const [mode, setMode] = useState('duration')
   const [duration, setDuration] = useState(30)
+  const [targetWPM, setTargetWPM] = useState(60)
   const t = content[lang]
 
   function handleLang(l) {
@@ -72,7 +76,7 @@ export function LandingPage({ onStart }) {
   }
 
   function handleStart() {
-    onStart({ mode, duration: mode === 'duration' ? duration : null, lang })
+    onStart({ mode, duration: mode === 'duration' ? duration : null, lang, targetWPM })
   }
 
   return (
@@ -194,6 +198,29 @@ export function LandingPage({ onStart }) {
               ))}
             </div>
           )}
+
+          {/* Target WPM picker */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', letterSpacing: '0.04em' }}>
+              {t.targetWpm}
+            </span>
+            <div style={{ display: 'flex', gap: '0.4rem' }}>
+              {TARGET_WPMS.map(w => (
+                <button key={w} onClick={() => setTargetWPM(w)} style={{
+                  width: '3rem',
+                  height: '2.25rem',
+                  borderRadius: '0.5rem',
+                  border: '1px solid',
+                  borderColor: targetWPM === w ? 'var(--accent)' : 'var(--border)',
+                  background: targetWPM === w ? 'var(--accent-light)' : 'var(--bg)',
+                  color: targetWPM === w ? 'var(--accent)' : 'var(--text-dim)',
+                  cursor: 'pointer',
+                  fontSize: '0.82rem',
+                  fontWeight: '600',
+                }}>{w}</button>
+              ))}
+            </div>
+          </div>
 
           {/* Start button */}
           <button onClick={handleStart} style={{
