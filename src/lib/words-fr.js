@@ -8,5 +8,5 @@ export const wordsFr = [
   'chercher', 'attendre', 'perdre', 'changer', 'vivre', 'aimer', 'porter', 'jouer', 'recevoir', 'traiter',
   'monde', 'vie', 'jour', 'temps', 'homme', 'femme', 'enfant', 'main', 'porte', 'lieu',
   'eau', 'peu', 'alors', 'encore', 'rien', 'jamais', 'souvent', 'toujours', 'ainsi', 'donc',
-  'puis', 'voici', 'autre', 'grand', 'petit', 'long', 'vrai', 'nouveau', 'seul', 'même',
+  'puis', 'voici', 'autre', 'grand', 'petit', 'long', 'vrai', 'nouveau', 'seul', 'sans',
 ]
