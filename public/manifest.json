@@ -1,0 +1,11 @@
+{
+  "name": "Test de vitesse de frappe",
+  "short_name": "typo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08090e",
+  "theme_color": "#e2cb95",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
