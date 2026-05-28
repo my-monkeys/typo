@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { calcWPM, calcAccuracy } from './lib/metrics'
+import { updateStreak } from './lib/streak'
 
 // text: string to type
 // duration: number of seconds (timed mode) or null (quote mode)
@@ -11,6 +12,7 @@ export function useTyping(text, duration) {
   const [startTime, setStartTime] = useState(null)
   const [elapsed, setElapsed] = useState(0)
   const [done, setDone] = useState(false)
+  const [streak, setStreak] = useState(0)
   const intervalRef = useRef(null)
   const positionRef = useRef(0)
   const startTimeRef = useRef(null)
@@ -68,6 +70,7 @@ export function useTyping(text, duration) {
       next[pos] = { ...next[pos], status }
       return next
     })
+    setStreak(s => updateStreak(s, status === 'correct'))
 
     const newPos = pos + 1
     setPosition(newPos)
@@ -96,6 +99,7 @@ export function useTyping(text, duration) {
     setElapsed(0)
     setDone(false)
     doneRef.current = false
+    setStreak(0)
   }, [text])
 
   const correctCount = charStates.slice(0, position).filter(c => c.status === 'correct').length
@@ -103,5 +107,5 @@ export function useTyping(text, duration) {
   const accuracy = calcAccuracy(correctCount, position)
   const remaining = duration != null ? Math.max(0, duration - Math.floor(elapsed)) : null
 
-  return { charStates, position, wpm, accuracy, elapsed, remaining, done, reset }
+  return { charStates, position, wpm, accuracy, elapsed, remaining, done, streak, reset }
 }
