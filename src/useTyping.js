@@ -40,6 +40,7 @@ export function useTyping(text, duration) {
   const handleKey = useCallback((e) => {
     if (doneRef.current) return
     if (e.key === 'Tab') { e.preventDefault(); return }
+    if (e.key === ' ') e.preventDefault()
 
     if (e.key === 'Backspace') {
       const pos = positionRef.current
