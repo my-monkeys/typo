@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  --accent: #e2cb95;
+  --accent-dim: #b8a06e;
+  --bg: #08090e;
+  --surface: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #e8e8e8;
+  --text-dim: rgba(232, 232, 232, 0.4);
+  --correct: #4ade80;
+  --error: #f87171;
+  --pending: rgba(232, 232, 232, 0.35);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@keyframes blink {
+  0%, 100% { border-color: var(--accent); }
+  50% { border-color: transparent; }
+}
+
+.cursor {
+  border-left: 2px solid var(--accent);
+  animation: blink 1s step-end infinite;
+}
