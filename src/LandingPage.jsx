@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Timer, Quote } from 'lucide-react'
+import { Timer, Quote, Code2, Calendar } from 'lucide-react'
 
 const DURATIONS = [15, 30, 60]
 const TARGET_WPMS = [40, 60, 80, 100]
@@ -11,7 +11,7 @@ const content = {
       subtitle: 'Mesurez votre WPM en quelques secondes, en français et en anglais.',
     },
     stats: ['Vitesse moyenne : 40 WPM', 'Rapide : 70 WPM', 'Record mondial : 216 WPM'],
-    modes: { duration: 'Durée', quote: 'Citation' },
+    modes: { duration: 'Durée', quote: 'Citation', code: 'Code', daily: 'Défi du jour' },
     start: 'Commencer le test',
     targetWpm: 'Vitesse cible (WPM)',
     seo: {
@@ -39,7 +39,7 @@ const content = {
       subtitle: 'Measure your WPM in seconds, in French and English.',
     },
     stats: ['Average speed: 40 WPM', 'Fast: 70 WPM', 'World record: 216 WPM'],
-    modes: { duration: 'Timed', quote: 'Quote' },
+    modes: { duration: 'Timed', quote: 'Quote', code: 'Code', daily: 'Daily challenge' },
     start: 'Start the test',
     targetWpm: 'Target WPM',
     seo: {
@@ -160,7 +160,7 @@ export function LandingPage({ onStart }) {
 
           {/* Mode picker */}
           <div style={{ display: 'flex', gap: '0.5rem' }}>
-            {([['duration', t.modes.duration, Timer], ['quote', t.modes.quote, Quote]]).map(([m, label, Icon]) => (
+            {([['duration', t.modes.duration, Timer], ['quote', t.modes.quote, Quote], ['code', t.modes.code, Code2], ['daily', t.modes.daily, Calendar]]).map(([m, label, Icon]) => (
               <button key={m} onClick={() => setMode(m)} style={{
                 display: 'flex', alignItems: 'center', gap: '0.4rem',
                 padding: '0.5rem 1.1rem',
