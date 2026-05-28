@@ -9,6 +9,16 @@ describe('bestKey', () => {
   it('builds key for quote mode', () => {
     expect(bestKey('quote', null, 'en')).toBe('typo_best_quote_en')
   })
+
+  it('builds key for code mode', () => {
+    expect(bestKey('code', null, 'fr')).toBe('typo_best_code')
+  })
+
+  it('builds key for daily mode includes today and lang', () => {
+    const today = new Date().toISOString().slice(0, 10)
+    expect(bestKey('daily', null, 'fr')).toBe(`typo_best_daily_${today}_fr`)
+    expect(bestKey('daily', null, 'en')).toBe(`typo_best_daily_${today}_en`)
+  })
 })
 
 describe('getBest / setBest', () => {
