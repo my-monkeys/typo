@@ -7,11 +7,10 @@ export function Results({ results, config, onRestart, onBack }) {
   const { mode, duration, lang } = config
   const key = bestKey(mode, duration, lang)
   const [isRecord, setIsRecord] = useState(false)
-  const [best, setBestState] = useState(null)
+  const [best, setBestState] = useState(() => getBest(key))
 
   useEffect(() => {
     const prev = getBest(key)
-    setBestState(prev)
     if (prev === null || wpm > prev) {
       setBest(key, wpm)
       setBestState(wpm)
