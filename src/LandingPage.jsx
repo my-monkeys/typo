@@ -14,6 +14,7 @@ const content = {
     stats: [['Moyenne', '40'], ['Rapide', '70'], ['Record du monde', '216']],
     modes: { duration: 'Durée', quote: 'Citation', code: 'Code', daily: 'Défi du jour' },
     start: 'Commencer le test',
+    versus: 'Jouer en versus',
     targetWpm: 'Vitesse cible (WPM)',
     theme: 'Changer de thème',
     seo: {
@@ -43,6 +44,7 @@ const content = {
     stats: [['Average', '40'], ['Fast', '70'], ['World record', '216']],
     modes: { duration: 'Timed', quote: 'Quote', code: 'Code', daily: 'Daily challenge' },
     start: 'Start the test',
+    versus: 'Play versus',
     targetWpm: 'Target WPM',
     theme: 'Toggle theme',
     seo: {
@@ -73,7 +75,7 @@ const MODES = [
   ['daily', Calendar],
 ]
 
-export function LandingPage({ onStart }) {
+export function LandingPage({ onStart, onVersus }) {
   const [lang, setLang] = useState(() => localStorage.getItem('typo_lang') || 'fr')
   const [mode, setMode] = useState('duration')
   const [duration, setDuration] = useState(30)
@@ -208,6 +210,13 @@ export function LandingPage({ onStart }) {
 
           <button className="btn btn-primary" onClick={handleStart} style={{ marginTop: '0.25rem' }}>
             {t.start}
+          </button>
+          <button
+            className="btn btn-ghost"
+            onClick={() => onVersus({ format: mode === 'duration' ? 'timed' : 'race', mode, duration: mode === 'duration' ? duration : null, lang, targetWPM })}
+            style={{ marginTop: '0.25rem' }}
+          >
+            {t.versus}
           </button>
         </div>
 
