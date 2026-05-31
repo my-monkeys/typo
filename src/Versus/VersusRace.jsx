@@ -38,15 +38,18 @@ function RaceField({ config, players, you, onProgress, onFinish }) {
 
   useEffect(() => { if (done) onFinish({ wpm, accuracy }) }, [done]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // opponent caret positions (exclude self), keyed by char index for quick lookup
+  // Opponent caret positions (exclude self), keyed by char index, plus the leading
+  // opponent (furthest pos) whose colour tints the text they've already typed.
   const ghosts = useMemo(() => {
     const map = {}
+    let leadPos = 0, leadColor = null
     for (const p of players) {
       if (p.player_id === you?.player_id) continue
       const pos = p.live?.pos ?? 0
       ;(map[pos] ||= []).push(p.color)
+      if (pos > leadPos) { leadPos = pos; leadColor = p.color }
     }
-    return map
+    return { map, leadPos, leadColor }
   }, [players, you])
 
   const standings = computeStandings(players, config.format)
@@ -74,12 +77,19 @@ function RaceField({ config, players, you, onProgress, onFinish }) {
       <div className="mono" style={{ maxWidth: 720, width: '100%', fontSize: '1.4rem', lineHeight: '2.2rem', letterSpacing: '0.01em', userSelect: 'none', color: 'var(--text-faint)' }}>
         {charStates.map((cs, i) => {
           const isCursor = i === position
-          const ghostColors = ghosts[i]
+          const ghostColors = ghosts.map[i]
+          // Chars WE typed keep our correct/error colour. Otherwise, if the leading
+          // opponent has already typed this char, show it in their colour (their trail).
+          const color =
+            cs.status === 'correct' ? 'var(--correct)'
+            : cs.status === 'error' ? 'var(--error)'
+            : (i < ghosts.leadPos && ghosts.leadColor) ? ghosts.leadColor
+            : 'var(--text-faint)'
           return (
             <span key={i}
               className={isCursor ? 'cursor' : ''}
               style={{
-                color: cs.status === 'correct' ? 'var(--correct)' : cs.status === 'error' ? 'var(--error)' : 'var(--text-faint)',
+                color,
                 borderRight: ghostColors ? `2px solid ${ghostColors[0]}` : undefined,
               }}>
               {cs.char}
