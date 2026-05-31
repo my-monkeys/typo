@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { LandingPage } from './LandingPage'
 import { TypingTest } from './TypingTest'
 import { Results } from './Results'
-import { Versus } from './Versus/Versus'
+
+// Lazy-loaded so solo players never download supabase-js / the versus bundle.
+const Versus = lazy(() => import('./Versus/Versus').then(m => ({ default: m.Versus })))
 
 export default function App() {
   const [phase, setPhase] = useState('selector')
@@ -41,7 +43,9 @@ export default function App() {
         <Results results={results} config={config} onRestart={handleRestart} onBack={handleBack} />
       )}
       {phase === 'versus' && versus && (
-        <Versus initialCode={versus.initialCode} createConfig={versus.createConfig} lang={versus.lang} onExit={exitVersus} />
+        <Suspense fallback={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100dvh' }} />}>
+          <Versus initialCode={versus.initialCode} createConfig={versus.createConfig} lang={versus.lang} onExit={exitVersus} />
+        </Suspense>
       )}
     </div>
   )
