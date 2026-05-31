@@ -69,17 +69,22 @@ export function TypingTest({ config, onFinish, onRestart }) {
     ? Math.min(text.length - 1, Math.floor(elapsed * targetWPM * 5 / 60))
     : -1
 
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', gap: '2rem', padding: '2rem' }}>
+  const colorFor = (status) =>
+    status === 'correct' ? 'var(--correct)'
+    : status === 'error' ? 'var(--error)'
+    : 'var(--text-faint)'
 
-      {/* Timer + streak row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2rem', width: '100%', maxWidth: '700px' }}>
-        <div style={{ fontSize: '2rem', fontWeight: '700', color: 'var(--accent)', fontVariantNumeric: 'tabular-nums', minWidth: '4rem', textAlign: 'center' }}>
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100dvh', gap: '2.5rem', padding: '2rem', position: 'relative', zIndex: 2 }}>
+
+      {/* Timer + streak */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', width: '100%', maxWidth: '720px' }}>
+        <div className="mono tnum" style={{ fontSize: '2.25rem', fontWeight: 700, color: 'var(--accent)', minWidth: '4.5rem', textAlign: 'center', letterSpacing: '-0.02em' }}>
           {timerLabel}
         </div>
         {streak > 5 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: streak >= 20 ? 'var(--accent)' : 'var(--text-dim)', fontSize: '0.9rem', fontWeight: '600' }}>
-            <Zap size={15} />
+          <div className="mono tnum" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: streak >= 20 ? 'var(--accent)' : 'var(--text-dim)', fontSize: '0.9rem', fontWeight: 600 }}>
+            <Zap size={15} fill={streak >= 20 ? 'currentColor' : 'none'} />
             {streak}
           </div>
         )}
@@ -87,14 +92,15 @@ export function TypingTest({ config, onFinish, onRestart }) {
 
       {/* Typing area */}
       <div
+        className="mono"
         style={{
-          maxWidth: '700px',
+          maxWidth: '720px',
           width: '100%',
-          fontFamily: 'var(--font-mono, monospace)',
-          fontSize: '1.25rem',
-          lineHeight: '2rem',
+          fontSize: '1.4rem',
+          lineHeight: '2.2rem',
+          letterSpacing: '0.01em',
           userSelect: 'none',
-          color: 'var(--pending)',
+          color: 'var(--text-faint)',
         }}
       >
         {charStates.map((cs, i) => {
@@ -104,13 +110,7 @@ export function TypingTest({ config, onFinish, onRestart }) {
             <span
               key={i}
               className={[isCursor ? 'cursor' : '', isGhost ? 'ghost-cursor' : ''].filter(Boolean).join(' ')}
-              style={{
-                color: cs.status === 'correct'
-                  ? 'var(--correct)'
-                  : cs.status === 'error'
-                  ? 'var(--error)'
-                  : 'var(--pending)',
-              }}
+              style={{ color: colorFor(cs.status) }}
             >
               {cs.char}
             </span>
@@ -119,11 +119,13 @@ export function TypingTest({ config, onFinish, onRestart }) {
       </div>
 
       {/* Live WPM */}
-      {wpm > 0 && (
-        <div style={{ color: 'var(--text-dim)', fontSize: '0.875rem' }}>
-          {wpm} WPM · {accuracy}%
-        </div>
-      )}
+      <div className="mono tnum" style={{ color: 'var(--text-dim)', fontSize: '0.875rem', minHeight: '1.2rem' }}>
+        {wpm > 0 ? `${wpm} WPM · ${accuracy}%` : ''}
+      </div>
+
+      <div className="mono" style={{ color: 'var(--text-faint)', fontSize: '0.72rem', letterSpacing: '0.04em' }}>
+        {lang === 'fr' ? 'Tab / Échap · recommencer' : 'Tab / Esc · restart'}
+      </div>
     </div>
   )
 }

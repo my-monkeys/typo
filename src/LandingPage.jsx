@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Timer, Quote, Code2, Calendar } from 'lucide-react'
+import { Timer, Quote, Code2, Calendar, Sun, Moon } from 'lucide-react'
+import { useTheme } from './useTheme'
 
 const DURATIONS = [15, 30, 60]
 const TARGET_WPMS = [40, 60, 80, 100]
@@ -10,10 +11,11 @@ const content = {
       title: 'Testez votre vitesse de frappe',
       subtitle: 'Mesurez votre WPM en quelques secondes, en français et en anglais.',
     },
-    stats: ['Vitesse moyenne : 40 WPM', 'Rapide : 70 WPM', 'Record mondial : 216 WPM'],
+    stats: [['Moyenne', '40'], ['Rapide', '70'], ['Record du monde', '216']],
     modes: { duration: 'Durée', quote: 'Citation', code: 'Code', daily: 'Défi du jour' },
     start: 'Commencer le test',
     targetWpm: 'Vitesse cible (WPM)',
+    theme: 'Changer de thème',
     seo: {
       whatTitle: "Qu'est-ce que le WPM ?",
       whatText: "Le WPM (Words Per Minute) est l'unité de mesure standard de la vitesse de frappe. Il correspond au nombre de mots de 5 caractères tapés correctement en une minute. Un score élevé en WPM reflète à la fois la rapidité et la précision.",
@@ -38,10 +40,11 @@ const content = {
       title: 'Test your typing speed',
       subtitle: 'Measure your WPM in seconds, in French and English.',
     },
-    stats: ['Average speed: 40 WPM', 'Fast: 70 WPM', 'World record: 216 WPM'],
+    stats: [['Average', '40'], ['Fast', '70'], ['World record', '216']],
     modes: { duration: 'Timed', quote: 'Quote', code: 'Code', daily: 'Daily challenge' },
     start: 'Start the test',
     targetWpm: 'Target WPM',
+    theme: 'Toggle theme',
     seo: {
       whatTitle: 'What is WPM?',
       whatText: 'WPM (Words Per Minute) is the standard unit for measuring typing speed. It counts the number of 5-character words typed correctly per minute. A high WPM score reflects both speed and accuracy.',
@@ -63,11 +66,19 @@ const content = {
   },
 }
 
+const MODES = [
+  ['duration', Timer],
+  ['quote', Quote],
+  ['code', Code2],
+  ['daily', Calendar],
+]
+
 export function LandingPage({ onStart }) {
   const [lang, setLang] = useState(() => localStorage.getItem('typo_lang') || 'fr')
   const [mode, setMode] = useState('duration')
   const [duration, setDuration] = useState(30)
   const [targetWPM, setTargetWPM] = useState(60)
+  const { theme, toggle } = useTheme()
   const t = content[lang]
 
   function handleLang(l) {
@@ -80,217 +91,180 @@ export function LandingPage({ onStart }) {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 2 }}>
 
-      {/* Header */}
       <header style={{
         borderBottom: '1px solid var(--border)',
-        padding: '1rem 2rem',
+        padding: '0.9rem 1.5rem',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         position: 'sticky',
         top: 0,
-        background: 'rgba(255,255,255,0.9)',
-        backdropFilter: 'blur(8px)',
-        zIndex: 10,
+        background: 'var(--header-bg)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        zIndex: 20,
       }}>
-        <span style={{ fontWeight: '800', fontSize: '1rem', color: 'var(--text)', letterSpacing: '-0.01em' }}>
+        <span className="mono" style={{ fontWeight: 700, fontSize: '0.95rem', letterSpacing: '-0.01em' }}>
           my-monkey <span style={{ color: 'var(--accent)' }}>/ typo</span>
         </span>
-        <div style={{ display: 'flex', gap: '0.375rem' }}>
+        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
           {['fr', 'en'].map(l => (
-            <button key={l} onClick={() => handleLang(l)} style={{
-              padding: '0.3rem 0.75rem',
-              borderRadius: '0.375rem',
-              border: '1px solid',
-              borderColor: lang === l ? 'var(--accent)' : 'var(--border)',
-              background: lang === l ? 'var(--accent-light)' : 'transparent',
-              color: lang === l ? 'var(--accent)' : 'var(--text-dim)',
-              cursor: 'pointer',
-              fontSize: '0.8rem',
-              fontWeight: '600',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-            }}>{l}</button>
+            <button
+              key={l}
+              onClick={() => handleLang(l)}
+              className={`chip ${lang === l ? 'is-active' : ''}`}
+              style={{ padding: '0.3rem 0.7rem', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}
+            >{l}</button>
           ))}
+          <span style={{ width: 1, height: '1.4rem', background: 'var(--border)', margin: '0 0.25rem' }} />
+          <button className="icon-btn" onClick={toggle} aria-label={t.theme} title={t.theme}>
+            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
         </div>
       </header>
 
-      {/* Main */}
-      <main style={{ flex: 1, maxWidth: '720px', width: '100%', margin: '0 auto', padding: '3rem 1.5rem 4rem', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+      <main style={{ flex: 1, maxWidth: 'var(--maxw)', width: '100%', margin: '0 auto', padding: '3.5rem 1.5rem 4.5rem', display: 'flex', flexDirection: 'column', gap: '2.75rem' }}>
 
-        {/* Headline */}
         <div style={{ textAlign: 'center' }}>
           <h1 style={{
-            fontSize: 'clamp(1.75rem, 5vw, 2.75rem)',
-            fontWeight: '800',
-            color: 'var(--text)',
-            lineHeight: 1.15,
-            letterSpacing: '-0.02em',
-            marginBottom: '0.875rem',
+            fontSize: 'clamp(2rem, 5.5vw, 3rem)',
+            fontWeight: 800,
+            lineHeight: 1.06,
+            letterSpacing: '-0.03em',
+            textWrap: 'balance',
+            marginBottom: '0.9rem',
           }}>
             {t.hero.title}
           </h1>
-          <p style={{ fontSize: '1.05rem', color: 'var(--text-dim)', maxWidth: '440px', margin: '0 auto', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '1.05rem', color: 'var(--text-dim)', maxWidth: '42ch', margin: '0 auto', lineHeight: 1.6 }}>
             {t.hero.subtitle}
           </p>
         </div>
 
-        {/* Stats bar */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-          {t.stats.map((s, i) => (
-            <span key={i} style={{ fontSize: '0.875rem', color: 'var(--text-dim)', fontVariantNumeric: 'tabular-nums' }}>
-              {s}
+        {/* reference stats — mono, faint */}
+        <div className="mono tnum" style={{ display: 'flex', justifyContent: 'center', gap: '1.75rem', flexWrap: 'wrap', fontSize: '0.82rem', color: 'var(--text-faint)' }}>
+          {t.stats.map(([label, val], i) => (
+            <span key={i}>
+              {label} <span style={{ color: 'var(--text-dim)', fontWeight: 500 }}>{val}</span>
             </span>
           ))}
         </div>
 
-        {/* Test card */}
+        {/* test config panel */}
         <div style={{
-          background: 'var(--bg-subtle)',
+          background: 'var(--surface)',
           border: '1px solid var(--border)',
-          borderRadius: '1rem',
-          padding: '2rem',
+          borderRadius: 'var(--radius-lg)',
+          padding: '2.25rem 2rem',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '1.5rem',
+          gap: '1.75rem',
         }}>
-
-          {/* Mode picker */}
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            {([['duration', t.modes.duration, Timer], ['quote', t.modes.quote, Quote], ['code', t.modes.code, Code2], ['daily', t.modes.daily, Calendar]]).map(([m, label, Icon]) => (
-              <button key={m} onClick={() => setMode(m)} style={{
-                display: 'flex', alignItems: 'center', gap: '0.4rem',
-                padding: '0.5rem 1.1rem',
-                borderRadius: '0.5rem',
-                border: '1px solid',
-                borderColor: mode === m ? 'var(--accent)' : 'var(--border)',
-                background: mode === m ? 'var(--accent-light)' : 'var(--bg)',
-                color: mode === m ? 'var(--accent)' : 'var(--text-dim)',
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                fontWeight: mode === m ? '600' : '400',
-              }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            {MODES.map(([m, Icon]) => (
+              <button
+                key={m}
+                onClick={() => setMode(m)}
+                className={`chip ${mode === m ? 'is-active' : ''}`}
+                style={{ padding: '0.5rem 1.05rem' }}
+              >
                 <Icon size={14} />
-                {label}
+                {t.modes[m]}
               </button>
             ))}
           </div>
 
-          {/* Duration picker */}
           {mode === 'duration' && (
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               {DURATIONS.map(d => (
-                <button key={d} onClick={() => setDuration(d)} style={{
-                  width: '3.25rem',
-                  height: '3.25rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid',
-                  borderColor: duration === d ? 'var(--accent)' : 'var(--border)',
-                  background: duration === d ? 'var(--accent-light)' : 'var(--bg)',
-                  color: duration === d ? 'var(--accent)' : 'var(--text-dim)',
-                  cursor: 'pointer',
-                  fontSize: '0.95rem',
-                  fontWeight: '600',
-                }}>{d}s</button>
+                <button
+                  key={d}
+                  onClick={() => setDuration(d)}
+                  className={`chip tnum ${duration === d ? 'is-active' : ''}`}
+                  style={{ width: '3.25rem', height: '3.25rem', justifyContent: 'center', fontSize: '0.95rem', fontWeight: 600 }}
+                >{d}s</button>
               ))}
             </div>
           )}
 
-          {/* Target WPM picker */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', letterSpacing: '0.04em' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem' }}>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               {t.targetWpm}
             </span>
             <div style={{ display: 'flex', gap: '0.4rem' }}>
               {TARGET_WPMS.map(w => (
-                <button key={w} onClick={() => setTargetWPM(w)} style={{
-                  width: '3rem',
-                  height: '2.25rem',
-                  borderRadius: '0.5rem',
-                  border: '1px solid',
-                  borderColor: targetWPM === w ? 'var(--accent)' : 'var(--border)',
-                  background: targetWPM === w ? 'var(--accent-light)' : 'var(--bg)',
-                  color: targetWPM === w ? 'var(--accent)' : 'var(--text-dim)',
-                  cursor: 'pointer',
-                  fontSize: '0.82rem',
-                  fontWeight: '600',
-                }}>{w}</button>
+                <button
+                  key={w}
+                  onClick={() => setTargetWPM(w)}
+                  className={`chip tnum ${targetWPM === w ? 'is-active' : ''}`}
+                  style={{ width: '3rem', height: '2.25rem', justifyContent: 'center', fontSize: '0.82rem', fontWeight: 600 }}
+                >{w}</button>
               ))}
             </div>
           </div>
 
-          {/* Start button */}
-          <button onClick={handleStart} style={{
-            padding: '0.8rem 2.5rem',
-            borderRadius: '0.5rem',
-            border: 'none',
-            background: 'var(--accent)',
-            color: '#ffffff',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            fontWeight: '700',
-            letterSpacing: '0.01em',
-            boxShadow: '0 2px 12px rgba(79,70,229,0.3)',
-          }}>
+          <button className="btn btn-primary" onClick={handleStart} style={{ marginTop: '0.25rem' }}>
             {t.start}
           </button>
         </div>
 
         {/* SEO content */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2.75rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
 
-          {/* What is WPM */}
           <section>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--text)', marginBottom: '0.625rem' }}>
+            <h2 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.7rem', letterSpacing: '-0.01em' }}>
               {t.seo.whatTitle}
             </h2>
-            <p style={{ color: 'var(--text-dim)', lineHeight: 1.75, fontSize: '0.95rem' }}>
+            <p style={{ color: 'var(--text-dim)', lineHeight: 1.75, fontSize: '0.95rem', maxWidth: '65ch' }}>
               {t.seo.whatText}
             </p>
           </section>
 
-          {/* Reference speeds */}
           <section>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--text)', marginBottom: '0.625rem' }}>
+            <h2 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.85rem', letterSpacing: '-0.01em' }}>
               {t.seo.levelsTitle}
             </h2>
-            <div style={{ border: '1px solid var(--border)', borderRadius: '0.625rem', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
               {t.seo.levels.map(([level, speed], i) => (
                 <div key={i} style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '0.65rem 1rem',
-                  background: i % 2 === 0 ? 'var(--bg)' : 'var(--bg-subtle)',
-                  borderTop: i > 0 ? '1px solid var(--border)' : 'none',
+                  alignItems: 'baseline',
+                  padding: '0.6rem 0',
+                  borderBottom: i < t.seo.levels.length - 1 ? '1px solid var(--border)' : 'none',
                 }}>
-                  <span style={{ color: 'var(--text)', fontSize: '0.9rem' }}>{level}</span>
-                  <span style={{ color: 'var(--accent)', fontWeight: '600', fontSize: '0.9rem', fontVariantNumeric: 'tabular-nums' }}>{speed}</span>
+                  <span style={{ fontSize: '0.95rem' }}>{level}</span>
+                  <span className="mono tnum" style={{ color: 'var(--accent)', fontWeight: 500, fontSize: '0.9rem' }}>{speed}</span>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* Tips */}
           <section>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--text)', marginBottom: '0.625rem' }}>
+            <h2 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.85rem', letterSpacing: '-0.01em' }}>
               {t.seo.tipsTitle}
             </h2>
-            <ol style={{ paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <ol style={{ listStyle: 'none', counterReset: 'tip', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               {t.seo.tips.map((tip, i) => (
-                <li key={i} style={{ color: 'var(--text-dim)', lineHeight: 1.7, fontSize: '0.95rem' }}>{tip}</li>
+                <li key={i} style={{ display: 'flex', gap: '0.85rem', alignItems: 'flex-start', color: 'var(--text-dim)', lineHeight: 1.65, fontSize: '0.95rem', maxWidth: '65ch' }}>
+                  <span className="mono tnum" style={{ color: 'var(--accent)', fontWeight: 600, flexShrink: 0, paddingTop: '0.05rem' }}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  {tip}
+                </li>
               ))}
             </ol>
           </section>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer style={{ padding: '1.25rem', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
-        <span style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>my-monkey.fr</span>
+      <footer style={{ padding: '1.5rem', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
+        <a href="https://my-monkey.fr" className="mono" style={{ color: 'var(--text-faint)', fontSize: '0.8rem', textDecoration: 'none' }}>
+          my-monkey.fr
+        </a>
       </footer>
     </div>
   )

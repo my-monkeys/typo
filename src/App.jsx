@@ -33,7 +33,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ minHeight: '100vh' }}>
+    <div style={{ minHeight: '100dvh' }}>
       {phase === 'selector' && (
         <LandingPage onStart={handleStart} />
       )}

@@ -3,7 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#16130d" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#faf7f1" media="(prefers-color-scheme: light)" />
     <title>Test de vitesse de frappe WPM gratuit - FR &amp; EN | my-monkey</title>
+
+    <!-- Set theme before paint to avoid a flash; OS preference unless the user chose one. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('typo_theme');
+          if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          document.documentElement.dataset.theme = t;
+        } catch (e) {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
     <meta name="description" content="Testez gratuitement votre vitesse de frappe en mots par minute (WPM). Modes chronométré 15/30/60s, citation, défi quotidien et code. Bilingue FR/EN, sans inscription." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://typo.my-monkey.fr/" />

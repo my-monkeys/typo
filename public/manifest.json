@@ -3,8 +3,8 @@
   "short_name": "typo",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#08090e",
-  "theme_color": "#e2cb95",
+  "background_color": "#16130d",
+  "theme_color": "#d9a441",
   "icons": [
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
