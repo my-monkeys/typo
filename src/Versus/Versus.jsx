@@ -39,11 +39,13 @@ export function Versus({ initialCode, createConfig, lang, onExit }) {
     return <VersusLobby room={v.room} players={v.players} you={v.you} config={v.config}
       onStart={v.start} onSetNick={v.setNick} onLeave={quit} />
   }
-  if (v.phase === 'racing') {
+  // Still racing AND you haven't finished → typing field. Once you finish (or the
+  // room flips to 'done'), show results — so a slow/AFK/disconnected opponent never
+  // strands you on the race screen. Standings keep updating live as others finish.
+  if (v.phase === 'racing' && !v.you?.finished) {
     return <VersusRace config={v.config} players={v.players} you={v.you}
       onProgress={v.sendProgress} onFinish={(r) => { v.finish(r) }} />
   }
-  // 'done'
   return <VersusResults config={v.config} players={v.players} you={v.you} onRematch={v.rematch} onLeave={quit} />
 }
 
