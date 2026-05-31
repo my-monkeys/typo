@@ -35,11 +35,16 @@ export function computeStandings(players, format) {
       return wb - wa
     })
   }
-  // race: finishers first (by finished_at asc), then unfinished by live pos desc
+  // race: those who completed the text rank above those still typing. Among
+  // finishers the BETTER TYPIST wins — by WPM then accuracy — not raw finish
+  // order: errors don't block progress, so finishing first can just mean sloppier
+  // (lower WPM + accuracy) typing, which shouldn't beat a faster, cleaner finisher.
   return arr.sort((a, b) => {
-    if (a.finished && b.finished) return new Date(a.finished_at) - new Date(b.finished_at)
-    if (a.finished) return -1
-    if (b.finished) return 1
+    if (a.finished !== b.finished) return a.finished ? -1 : 1
+    if (a.finished && b.finished) {
+      if (b.wpm !== a.wpm) return (b.wpm ?? 0) - (a.wpm ?? 0)
+      return (b.accuracy ?? 0) - (a.accuracy ?? 0)
+    }
     return liveOf(b).pos - liveOf(a).pos
   })
 }

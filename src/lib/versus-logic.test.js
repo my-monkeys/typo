@@ -32,15 +32,24 @@ describe('colorForIndex', () => {
 describe('computeStandings', () => {
   const base = (over) => ({ player_id: 'x', nick: 'X', finished: false, finished_at: null, wpm: 0, live: { pos: 0, wpm: 0 }, ...over })
 
-  it('race: finishers first by finished_at, then by live pos', () => {
+  it('race: finishers ranked by WPM, not finish order; unfinished below by pos', () => {
     const players = [
-      base({ player_id: 'a', finished: true, finished_at: '2026-01-01T00:00:02Z', wpm: 80 }),
-      base({ player_id: 'b', finished: true, finished_at: '2026-01-01T00:00:01Z', wpm: 90 }),
-      base({ player_id: 'c', finished: false, live: { pos: 40, wpm: 50 } }),
-      base({ player_id: 'd', finished: false, live: { pos: 10, wpm: 30 } }),
+      // 'first' completed EARLIEST but with the lowest WPM + accuracy — must NOT win.
+      base({ player_id: 'first', finished: true, finished_at: '2026-01-01T00:00:01Z', wpm: 40, accuracy: 70 }),
+      base({ player_id: 'best',  finished: true, finished_at: '2026-01-01T00:00:03Z', wpm: 80, accuracy: 98 }),
+      base({ player_id: 'racing', finished: false, live: { pos: 120, wpm: 60 } }),
+      base({ player_id: 'behind', finished: false, live: { pos: 30, wpm: 45 } }),
     ]
     const order = computeStandings(players, 'race').map(p => p.player_id)
-    expect(order).toEqual(['b', 'a', 'c', 'd'])
+    expect(order).toEqual(['best', 'first', 'racing', 'behind'])
+  })
+
+  it('race: equal WPM broken by accuracy', () => {
+    const players = [
+      base({ player_id: 'sloppy', finished: true, finished_at: '2026-01-01T00:00:01Z', wpm: 60, accuracy: 80 }),
+      base({ player_id: 'clean',  finished: true, finished_at: '2026-01-01T00:00:05Z', wpm: 60, accuracy: 99 }),
+    ]
+    expect(computeStandings(players, 'race').map(p => p.player_id)).toEqual(['clean', 'sloppy'])
   })
 
   it('timed: ranked by wpm desc (final if finished, else live)', () => {
