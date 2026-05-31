@@ -1,31 +1,7 @@
 import { useMemo, useEffect } from 'react'
 import { Zap } from 'lucide-react'
 import { useTyping } from './useTyping'
-import { wordsFr } from './lib/words-fr'
-import { wordsEn } from './lib/words-en'
-import { quotesFr } from './lib/quotes-fr'
-import { quotesEn } from './lib/quotes-en'
-import { snippets } from './lib/snippets'
-import { getDailyText } from './lib/daily'
-
-function generateText(mode, lang) {
-  if (mode === 'quote') {
-    const list = lang === 'fr' ? quotesFr : quotesEn
-    return list[Math.floor(Math.random() * list.length)]
-  }
-  if (mode === 'code') {
-    return snippets[Math.floor(Math.random() * snippets.length)]
-  }
-  if (mode === 'daily') {
-    return getDailyText(lang, quotesFr, quotesEn)
-  }
-  const words = lang === 'fr' ? wordsFr : wordsEn
-  const result = []
-  for (let i = 0; i < 200; i++) {
-    result.push(words[Math.floor(Math.random() * words.length)])
-  }
-  return result.join(' ')
-}
+import { generateText } from './lib/textgen'
 
 export function TypingTest({ config, onFinish, onRestart }) {
   const { mode, duration, lang, targetWPM } = config
