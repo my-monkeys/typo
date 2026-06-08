@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Timer, Quote, Code2, Calendar, Sun, Moon } from 'lucide-react'
 import { useTheme } from './useTheme'
+import { MonkeyFooter } from './MonkeyFooter'
 
 const DURATIONS = [15, 30, 60]
 const TARGET_WPMS = [40, 60, 80, 100]
@@ -270,11 +271,7 @@ export function LandingPage({ onStart, onVersus }) {
         </div>
       </main>
 
-      <footer style={{ padding: '1.5rem', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
-        <a href="https://my-monkey.fr" className="mono" style={{ color: 'var(--text-faint)', fontSize: '0.8rem', textDecoration: 'none' }}>
-          my-monkey.fr
-        </a>
-      </footer>
+      <MonkeyFooter lang={lang} />
     </div>
   )
 }
